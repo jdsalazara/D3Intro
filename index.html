@@ -30,7 +30,7 @@
 <body>
     <svg class="chart"></svg>
     <script type="text/javascript">
-    d3.csv("https://github.com/jdsalazara/D3Intro/blob/master/data/overijssel_population.csv?raw=true", {mode:'cors', credentials: 'include'}).then(function (data) {
+    d3.csv("./data/overijssel_population.csv?raw=true").then(function (data) {
         // in here is the callback function, inside it you have access to the loaded data object
         let svgwidth = 500;
         let barHeight = 20;
