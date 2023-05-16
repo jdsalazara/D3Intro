@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- First load the D3 javascript library: -->
+    <script type="text/javascript" src="lib/d3.min.js"></script>
+    <style>
+    .chart {
+      background-color: rgb(245, 245, 245);
+      padding: 5px;
+    }
+    .chart rect {
+      fill: steelblue;
+    }
+    .chart text {
+      fill: white;
+      font: 9px sans-serif;
+      text-anchor: end;
+    }
+    .axis text {
+        fill: black;
+        font: 9px sans-serif;
+    }
+    .axis path, .axis line {
+        fill: none;
+        stroke: black;
+    }
+  </style>
+</head>
+<body>
+    <svg class="chart"></svg>
+    <script type="text/javascript">
+    d3.csv("https://github.com/jdsalazara/D3Intro/blob/main/overijssel_population.csv?raw=true").then(function (data) {
+        // in here is the callback function, inside it you have access to the loaded data object
+        let svgwidth = 500;
+        let barHeight = 20;
+        let svgheight = barHeight * data.length;
+        let xScale = d3.scaleLinear()
+            .domain([0, d3.max(data, function (d) { return +d.aant_inw })])
+            .range([0, svgwidth]);
+            let theAxis = d3.axisBottom(xScale);
+        let chart = d3.select("svg")
+            .attr("width", svgwidth)
+            .attr("height", svgheight + 30);
+        let bar = chart.selectAll("g")
+            .data(data)
+            .enter().append("g")
+            .attr("transform", function (d, i) { return "translate(0," + i * barHeight + ")"; }) ;
+        bar.append("rect")
+          .attr("width", function (d) { return xScale(+d.aant_inw) })
+          .attr("height", barHeight - 1);
+        bar.append("text") //this is code for the OPTIONAL challenge (names in bars)
+          .attr("x", function(d) { return xScale(d.aant_inw) - 3 })
+          .attr("y", barHeight / 2)
+          .text(function(d) { return d.gm_naam; });
+        chart.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + svgheight + ")")
+          .call(theAxis);
+        } //end of callback function .then()
+    ); //end of d3.csv
+    </script>
+
+    
+</body>
+</html>
